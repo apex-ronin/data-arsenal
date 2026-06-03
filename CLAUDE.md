@@ -6,4 +6,4 @@
 4. **Commander's Intent + Semantic Hard-Stops**: Do not attempt continuous execution on autopilot or rely solely on local passes/tests. Tests validate observable behavior, not strings. If you hit a Semantic Hard-Stop or an undocumented edge case, STOP and ask the user.
 5. **Trust but Verify**: No substantive commit ships without peer review.
 6. **Regulatory Citations**: Any embedded policy logic (like M-26-04) must include the primary source URL inline as a comment.
-7. **Session Closing**: Before terminating, you must update the **global** `STATE.md` at `c:\Users\Jnel9\Workspaces\STATE.md` (canonical single source of truth — no copies in sub-workspaces), check off tasks in `data_arsenal_roadmap.md`, and commit the current state after getting peer review.
+7. **Session Closing**: Before terminating, you must update the **global** `STATE.md` at `C:\Users\jnel9\OneDrive\Workspaces\STATE.md` (canonical single source of truth — no copies in sub-workspaces), check off tasks in `data_arsenal_roadmap.md`, and commit the current state after getting peer review.
