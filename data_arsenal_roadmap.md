@@ -1,56 +1,61 @@
 # DATA ARSENAL ADK — PROJECT ROADMAP
 
 **Level 2 Tracking | Local Environment: `data-arsenal/` workspace**
+**Updated: 2026-06-06**
 
 ---
 
-## CLAUDE CODE DIRECTIVES - CURRENT SESSION
-**Task Assigned:** Phase 3D - Vertex AI Vector Search Ingestion Pipeline
-**Priority:** Highest (Per Gemini Global Arbitrator)
+## CURRENT STATUS
 
-### Current Priority: CMMC Level 2 Sovereign Infrastructure
-**Goal:** Build the GCP deployment scripts to embed and ingest the 78K Census GOVS JSONL into a strictly private, VPC-bound Vertex AI Vector Search index.
-
-### Execution Sequence (Continuous Autonomy Authorized)
-Execute the following sequentially. DO NOT mix client code (agent tools) into this repository. This repo is strictly infrastructure.
-
-- [x] **1. Embedding Generator:** Create `pipeline/embedder.py` leveraging Vertex AI's `text-embedding-005` model.
-    - **Constraints:** Read the Census GOVS JSONL. Crucially, drop batch size to exactly **200 items per batch** to avoid API rate limits. Output `.jsonl` files formatted as `{"id": "...", "embedding": [...]}` compliant with Vector Search.
-    - **Completed:** 2026-04-09 | 392 batches × 200 | dry-run validated 78,291 records → correct schema
-- [x] **2. Secure GCS Sync:** Create `pipeline/storage.py` to push embeddings to GCS.
-    - **Constraints:** Target region MUST be `us-east5`. The bucket must be instantiated with **Uniform Bucket-Level Access** enabled and **Public Access Prevention (Enforced)**. Absolutely no public bleed, to maintain CMMC Level 2 CUI compliance.
-    - **Completed:** 2026-04-09 | Uniform access + PAP enforced | compliance patch logic included
-- [x] **3. Sovereign Index Deployment:** Create `pipeline/deploy_index.py`.
-    - **Constraints:** 
-        - Use `create_tree_ah_index()` due to the 78K corpus size. Target `us-central1` (Vector Search not supported in us-east5; compliance unlock is Assured Workloads + Org Policy, not region selection).
-        - **Data Handoff:** You must build an async polling loop to check `index.resource_name` for a DEPLOYED status which will take 30-60 minutes.
-        - **VPC Enforcement:** Do not deploy a default public endpoint. The `aiplatform.MatchingEngineIndexEndpoint.create()` call must specify a private `network` kwarg (VPC-peered endpoint) to prevent public internet CUI leakage.
-        - Only after the long DEPLOYED wait, call `deploy_index()`.
-    - **Completed:** 2026-04-09 | Script written | **DEPLOYED 2026-05-14** | 78,256 vectors indexed | VPC-peered endpoint live
-    - **Index:** `projects/776676408891/locations/us-central1/indexes/1040747129317883904`
-    - **Endpoint:** `projects/776676408891/locations/us-central1/indexEndpoints/6319845501898326016`
-    - **Deployed index ID:** `census_govs_2022`
-
-*Note for Claude: You have continuous autonomy within this `data-arsenal/` boundary. Because Step 3 has a 30-60 minute wait loop, coordinate with the terminal environment carefully so you don't time out. When done, output the private `endpoint_id` so we can wire the `ronin/` client.*
+**Pipeline items complete. GCP torn down 2026-06-06.** ronin-sovereign-core deleted — Vertex index, endpoint, and GCS bucket are gone.
+Embeddings (289.8 MB, 78,291 records) confirmed on local disk at `GCP_RECOVERY\embeddings\`. Source of truth is local.
+This workspace is in cold storage — no active build work until cloud rebuild trigger fires.
 
 ---
 
-## EXECUTION RUNBOOK (CLI REFERENCE)
-Once the scripts are built, execute the pipeline sequentially in your terminal using the following parameters:
+## WHAT IS COMPLETE
 
-```bash
-# Step 1 (~20 min API time)
-export GCP_PROJECT_ID=ronin-sovereign-core
-uv run python pipeline/embedder.py
+| Item | Status | Details |
+|---|---|---|
+| 1. Embedding Generator (`pipeline/embedder.py`) | ✅ COMPLETE | 392 batches × 200 items. 78,291 records. `text-embedding-005`. Validated schema. (2026-04-09) |
+| 2. Secure GCS Sync (`pipeline/storage.py`) | ✅ COMPLETE | `gs://ronin-sovereign-core-embeddings/`. Uniform bucket-level access + PAP enforced. **us-central1** (us-east5 not mandated — confirmed 2026-05-14 regulatory audit). 290MB uploaded. |
+| 3. Sovereign Index Deployment (`pipeline/deploy_index.py`) | ✅ COMPLETE | Tree-AH index. VPC-peered private endpoint. 78,256 vectors indexed. DEPLOYED 2026-05-14. |
 
-# Step 2
-export GCS_EMBEDDINGS_BUCKET=ronin-sovereign-core-embeddings
-uv run python pipeline/storage.py
-# → prints CONTENTS_DELTA_URI
-
-# Step 3 (30-60 min LRO — run in a persistent terminal)
-export VPC_NETWORK=projects/{project_number}/global/networks/{network_name}
-export CONTENTS_DELTA_URI=gs://...
-uv run python pipeline/deploy_index.py
-# → prints endpoint_resource_name to wire into ronin/
+**Former endpoint (DELETED 2026-06-06 with ronin-sovereign-core):**
 ```
+Index:    projects/776676408891/locations/us-central1/indexes/1040747129317883904
+Endpoint: projects/776676408891/locations/us-central1/indexEndpoints/6319845501898326016
+Deployed index ID: census_govs_2022
+```
+Rebuild from local embeddings when cloud trigger fires. `deploy_index.py` is idempotent — same script rebuilds cleanly.
+
+---
+
+## SETTLED DECISIONS — DO NOT RELITIGATE
+
+- **us-east5 vs us-central1:** us-east5 is a design choice, not a regulatory mandate. CMMC L2, DFARS 252.239-7010, and FedRAMP Moderate impose no specific region. Census GOVS data is PUBLIC — CUI controls not triggered. us-central1 is correct (FedRAMP High confirmed Mar 2025). us-east5 is not supported for Vertex AI Vector Search. (Confirmed 2026-05-14 regulatory audit.)
+- **Embeddings in .gitignore:** `census_govs_embeddings.json` (289.8MB) is gitignored. **Canonical copy is now local only:** `C:\Users\jnel9\OneDrive\Workspaces\GCP_RECOVERY\embeddings\ronin-sovereign-core-embeddings\census-govs\embeddings\`. GCS bucket deleted 2026-06-06.
+- **Repo boundary:** This repo is infrastructure only. No agent client code here. `ronin/` consumes the endpoint via VPC peering.
+
+---
+
+## MAINTENANCE / NEXT ACTIONS
+
+| Task | When | Notes |
+|---|---|---|
+| Rebuild Vertex index from local embeddings | On cloud trigger | `deploy_index.py` is idempotent. Embeddings on disk, ready to re-deploy. |
+| Delta refresh pipeline (3x daily Cloud Scheduler) | Phase 3F / before enterprise | Suspended until cloud rebuilt. |
+| SAM/USASpending enrichment (2B.2–2B.4) | Post Phase 3F | Suspended. Adds registration data + award history to entity records. |
+
+---
+
+## SESSION LOG
+
+| Date | Key Actions | Commit |
+|---|---|---|
+| 2026-04-09 | embedder.py + storage.py written and validated | — |
+| 2026-04-18 | deploy_index.py written, LRO restarted | — |
+| 2026-05-14 | Regulatory audit: us-east5 not mandated. Storage fixed to us-central1. Index DEPLOYED. VPC-peered endpoint live. | — |
+| 2026-05-14 | Repository reinitialized after OneDrive git corruption. Embeddings added to .gitignore. | latest |
+| 2026-06-03 | Roadmap synced to STATE.md ground truth. Project marked complete/maintenance. | — |
+| 2026-06-10 | Local retrieval rebuild (handoff Item 1): Vertex embeddings orphaned (embedder model gone) — re-embedded locally via LM Studio nomic-embed-text-v1.5, FAISS indexes on G:\AI-Models\indexes with manifest. pipeline/build_local_indexes.py (checkpointed) + query_local_indexes.py (acceptance gates). venv rebuilt (uv). | — |
