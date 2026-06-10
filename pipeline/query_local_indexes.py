@@ -59,7 +59,7 @@ def acceptance() -> int:
 
     hits = search("legal_corpus", "CMMC self-assessment requirement", k=5)
     ids = [h["id"] for h in hits]
-    print("\n[legal_corpus] 'CMMC self-assessment requirement' →", ids)
+    print("\n[legal_corpus] 'CMMC self-assessment requirement' ->", ids)
     if any("252.204-7021" in i for i in ids):
         print("  PASS — 252.204-7021 in top 5")
     else:
@@ -67,7 +67,7 @@ def acceptance() -> int:
         ok = False
 
     hits = search("principalities", "irrigation district California", k=5)
-    print("\n[principalities] 'irrigation district California' →")
+    print("\n[principalities] 'irrigation district California' ->")
     plausible = 0
     for h in hits:
         st = h.get("metadata", {}).get("state_code", "?")
