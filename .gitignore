@@ -201,4 +201,6 @@ my_env.tfvars
 # A2A Inspector
 tools/a2a-inspector/
 
-data/processed/embeddings/census_govs_embeddings.jsonl
+# Data layer — NEVER tracked (sovereign data-privacy rule). Kept local only.
+# Tooling/pipeline code is shareable; the data is not. Reconstruct via pipeline/.
+data/

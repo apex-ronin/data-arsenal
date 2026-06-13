@@ -28,6 +28,7 @@ import argparse
 import datetime
 import json
 import logging
+import os
 import time
 from pathlib import Path
 
@@ -50,8 +51,10 @@ PART_SIZE = 1024         # records per checkpoint part (multiple of BATCH_SIZE)
 MAX_RETRIES = 5
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+# Canonical primordial-galaxy lives on G:\repos (the OneDrive copy is retired — do not use it).
+# Override with LEGAL_CORPUS_DIR env var if your checkout differs.
 LEGAL_CORPUS_DIR = Path(
-    r"C:\Users\jnel9\OneDrive\Workspaces\AI-Agents\Active\primordial-galaxy\data\legal_corpus"
+    os.getenv("LEGAL_CORPUS_DIR", r"G:\repos\primordial-galaxy\data\legal_corpus")
 )
 ENTITY_JSONL = REPO_ROOT / "data" / "processed" / "census" / "master_gov_units_2022.jsonl"
 

@@ -23,11 +23,11 @@ This workspace is in cold storage — no active build work until cloud rebuild t
 
 **Former endpoint (DELETED 2026-06-06 with ronin-sovereign-core):**
 ```
-Index:    projects/776676408891/locations/us-central1/indexes/1040747129317883904
-Endpoint: projects/776676408891/locations/us-central1/indexEndpoints/6319845501898326016
+Index / Endpoint resource IDs: [redacted — GCP project + Vertex resources deleted 2026-06-06]
 Deployed index ID: census_govs_2022
 ```
-Rebuild from local embeddings when cloud trigger fires. `deploy_index.py` is idempotent — same script rebuilds cleanly.
+Superseded by the local FAISS pipeline (`pipeline/build_local_indexes.py`). The old Vertex
+deploy script is archived at `_archive_gcp/pipeline/deploy_index.py` if a cloud path is ever rebuilt.
 
 ---
 

@@ -63,4 +63,4 @@ def fetch_title_48():
 if __name__ == "__main__":
     result = fetch_title_48()
     if result:
-        logger.info("Extraction complete. Awaiting downstream Vector Search ingester.")
+        logger.info("Extraction complete. Feed to the local FAISS pipeline (build_local_indexes.py).")

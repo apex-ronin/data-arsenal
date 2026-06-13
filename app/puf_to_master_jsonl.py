@@ -3,15 +3,17 @@ import json
 import os
 from pathlib import Path
 
-# Paths
-EXCEL_PATH = Path(r"C:\Users\Jnel9\Workspaces\AI-Agents\Active\data-arsenal\data\raw\census_final\Govt_Units_2022_Final.xlsx")
-OUTPUT_JSONL = Path(r"C:\Users\Jnel9\Workspaces\AI-Agents\Active\data-arsenal\data\processed\census\master_gov_units_2022.jsonl")
+# Repo-relative paths (data/ is gitignored — local only). One-time conversion script;
+# do not rerun without first confirming data/ is not tracked in git.
+REPO_ROOT = Path(__file__).resolve().parents[1]
+EXCEL_PATH = REPO_ROOT / "data" / "raw" / "temp_census" / "Govt_Units_2022_Final.xlsx"
+OUTPUT_JSONL = REPO_ROOT / "data" / "processed" / "census" / "master_gov_units_2022.jsonl"
 
 # Sheets to process
 SHEETS = ['General Purpose', 'Special District', 'DEP School District']
 
 def generate_semantic_content(row):
-    """Generate a rich natural language string for Vector Search embeddings."""
+    """Generate a rich natural language string for the local FAISS embeddings."""
     name = str(row.get('UNIT_NAME', 'Unknown Entity')).title()
     govt_type = str(row.get('UNIT_TYPE', 'Government Unit'))
     state = str(row.get('STATE', 'Unknown State'))

@@ -16,8 +16,8 @@ DEFAULT_URL = "https://www2.census.gov/programs-surveys/govs/tables/2022/2022_di
 
 def extract_census_govs(csv_url: str = DEFAULT_URL):
     """
-    Downloads and parses the Census GOVS CSV, converting it directly into 
-    structured JSON payloads optimized for Vertex AI Vector Search staging.
+    Downloads and parses the Census GOVS CSV, converting it directly into
+    structured JSON payloads for the local FAISS pipeline (build_local_indexes.py).
     """
     logger.info(f"Initiating extraction from: {csv_url}")
     
