@@ -45,7 +45,7 @@ def fetch_title_48():
         response.raise_for_status()
         data = response.json()
         
-        # Save payload logic (staging area for Vertex)
+        # Save payload logic (staging area for the local FAISS pipeline)
         output_dir = Path("data/raw")
         output_dir.mkdir(parents=True, exist_ok=True)
         out_file = output_dir / "ecfr_title_48.json"

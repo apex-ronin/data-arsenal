@@ -43,7 +43,7 @@ deploy script is archived at `_archive_gcp/pipeline/deploy_index.py` if a cloud 
 
 | Task | When | Notes |
 |---|---|---|
-| Rebuild Vertex index from local embeddings | On cloud trigger | `deploy_index.py` is idempotent. Embeddings on disk, ready to re-deploy. |
+| (Archived) Cloud Vertex index rebuild | Only if a cloud trigger ever fires | Superseded by the local FAISS pipeline. The old Vertex `deploy_index.py` is in `_archive_gcp/` if ever needed. |
 | Delta refresh pipeline (3x daily Cloud Scheduler) | Phase 3F / before enterprise | Suspended until cloud rebuilt. |
 | SAM/USASpending enrichment (2B.2–2B.4) | Post Phase 3F | Suspended. Adds registration data + award history to entity records. |
 

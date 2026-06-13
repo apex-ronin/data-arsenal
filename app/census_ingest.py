@@ -55,7 +55,7 @@ def extract_census_govs(csv_url: str = DEFAULT_URL):
         with open(out_file, "w", encoding="utf-8") as f:
             json.dump(records, f, indent=2)
             
-        logger.info(f"Pipeline complete. Staged structured dataset at {out_file} for Vertex ingestion.")
+        logger.info(f"Pipeline complete. Staged structured dataset at {out_file} for the local FAISS pipeline.")
         return out_file
 
     except Exception as e:
