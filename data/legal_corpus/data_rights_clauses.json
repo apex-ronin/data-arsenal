@@ -1,0 +1,20 @@
+[
+    {
+        "id": "DFARS 252.227-7013",
+        "title": "Rights in Technical Data\u2014Noncommercial Items",
+        "vector": "Data Rights, Technical Data, IP, Intellectual Property, Government License",
+        "clause_text": "This clause governs the Government's rights to technical data for noncommercial items developed under a DoD contract. The Government receives unlimited rights in technical data pertaining to: items, components, or processes developed exclusively with Government funds; form, fit, and function data; corrections or changes to Government-furnished data; and data necessary to operate, maintain, or install items. The contractor retains limited rights in technical data pertaining to items developed exclusively at private expense, which means the Government may only use such data within the Government, cannot release it outside the Government, and must mark it as protected. For items developed with mixed funding, the Government receives Government-purpose rights for five years, after which unlimited rights attach. Contractors must assert restrictions prior to contract award."
+    },
+    {
+        "id": "DFARS 252.227-7017",
+        "title": "Identification and Assertion of Use, Release, or Disclosure Restrictions",
+        "vector": "Data Rights, IP, Intellectual Property, Restrictive Markings, Assertion",
+        "clause_text": "This clause requires offerors to identify and assert any restrictions on the Government's use, release, or disclosure of technical data and computer software that will be delivered under the contract. The offeror must submit an assertion list identifying each item of technical data and computer software for which restrictions are asserted, the basis for each assertion, the specific restrictions asserted, and the name of the developer or licensor with the proprietary interest. Assertions must be made prior to contract award or within the time specified by the Contracting Officer. Failure to assert restrictions constitutes a waiver of such restrictions. The Government may challenge any assertion it believes to be unjustified."
+    },
+    {
+        "id": "FAR 52.227-14",
+        "title": "Rights in Data\u2014General",
+        "vector": "Data Rights, Technical Data, IP, Intellectual Property, Government License, Civilian Agencies",
+        "clause_text": "This clause, used in civilian agency contracts, establishes the Government's rights in data (technical data and computer software) first produced in the performance of the contract. The Government receives unlimited rights in data first produced under the contract, data that constitute manuals or instructional and training material for installation, operation, or routine maintenance, and data specifically identified in the contract as data to be delivered. The contractor receives a license to use data delivered under the contract for its own purposes. The contractor may protect data pertaining to items it developed at private expense by marking it with a limited rights legend, provided it identifies such items prior to contract award. The Government may release limited rights data outside the Government only under certain conditions."
+    }
+]

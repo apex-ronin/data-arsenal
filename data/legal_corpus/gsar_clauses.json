@@ -1,0 +1,14 @@
+[
+    {
+        "id": "GSAR 552.239-7001",
+        "title": "Prohibition on Use of Non-American AI Systems (Proposed \u2014 Refresh 32)",
+        "vector": "GSAR, AI, Artificial Intelligence, American AI, National Security, Supply Chain",
+        "clause_text": "PROPOSED CLAUSE (GSAR Refresh 32, not yet binding): This proposed GSAR clause would prohibit contractors from using AI systems developed or owned by entities of concern\u2014including entities headquartered in, operating under the jurisdiction of, or substantially controlled by China, Russia, Iran, North Korea, Cuba, or Venezuela\u2014in performance of any General Services Administration contract. 'AI system' means any machine-based system that makes decisions, recommendations, or predictions based on training data or algorithms. Contractors must attest at time of offer and upon request during performance that no prohibited AI systems are used. A prohibited AI system used in supply chain components or subcontractor performance is also covered. Violations would constitute a material breach and could trigger False Claims Act liability. Note: As of 2025, this clause is proposed under GSAR 552.239-7001 but is NOT yet enacted as binding law."
+    },
+    {
+        "id": "GSAR 552.238-102",
+        "title": "English Language Requirements for Federal Supply Schedule Contracts",
+        "vector": "GSAR, Federal Supply Schedule, MAS, Commercial Items, GSA Schedule",
+        "clause_text": "This clause requires that all documentation, proposals, offers, and communications submitted under GSA Federal Supply Schedule (Multiple Award Schedule) contracts be in the English language. Price lists, catalogs, technical specifications, and all other contract deliverables must be provided in English. Where the contractor's commercial catalog or documentation is in another language, the contractor must provide certified English translations. This requirement applies to all tiers of performance, including subcontractors providing services directly to Federal end users. The Contracting Officer may waive this requirement for specific tasks when non-English materials are operationally necessary and an English summary or translation is provided."
+    }
+]

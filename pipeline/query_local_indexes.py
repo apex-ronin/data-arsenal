@@ -1,18 +1,22 @@
 r"""
 Query the local FAISS indexes — retrieval round-trip + acceptance check.
 
-No network beyond localhost, no GCP creds. Embeds the query via LM Studio
-(nomic-embed-text-v1.5 with the required 'search_query: ' prefix), searches
-the G:\ index, prints top-k with metadata from the JSONL sidecar.
+No network beyond localhost, no GCP creds. Embeds the query via Ollama
+(nomic-embed-text with the required 'search_query: ' prefix), searches
+the local index (INDEX_DIR, repo-relative by default), prints top-k with
+metadata from the JSONL sidecar. Was LM Studio until 2026-08-10.
 
 Usage:
   python pipeline/query_local_indexes.py legal_corpus "CMMC self-assessment requirement"
   python pipeline/query_local_indexes.py principalities "irrigation district California"
   python pipeline/query_local_indexes.py --acceptance     # run the handoff acceptance gates
+                                                            # (assumes the full private dataset;
+                                                            # point RONIN_INDEX_DIR at a full build)
 """
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -20,8 +24,9 @@ import faiss
 import numpy as np
 import requests
 
-INDEX_DIR = Path(r"G:\AI-Models\indexes")
-EMBED_URL = "http://localhost:1234/v1/embeddings"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+INDEX_DIR = Path(os.getenv("RONIN_INDEX_DIR", str(REPO_ROOT / "data" / "indexes")))
+EMBED_URL = "http://localhost:11434/api/embed"
 
 
 def load_manifest(name: str) -> dict:
@@ -34,9 +39,10 @@ def search(name: str, query: str, k: int = 5) -> list[dict]:
     resp = requests.post(EMBED_URL, json={
         "model": m["embedder"],
         "input": [m["query_prefix"] + query],
+        "options": {"num_gpu": 0},
     }, timeout=120)
     resp.raise_for_status()
-    vec = np.array([resp.json()["data"][0]["embedding"]], dtype=np.float32)
+    vec = np.array(resp.json()["embeddings"], dtype=np.float32)
     faiss.normalize_L2(vec)
 
     index = faiss.read_index(str(INDEX_DIR / m["index_file"]))

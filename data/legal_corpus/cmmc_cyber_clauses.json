@@ -1,0 +1,20 @@
+[
+    {
+        "id": "DFARS 252.204-7021",
+        "title": "Cybersecurity Maturity Model Certification (CMMC) Requirements",
+        "vector": "CMMC, Cybersecurity, CUI, Covered Defense Information",
+        "clause_text": "This clause, effective November 10, 2025, requires contractors and subcontractors that will process, store, or transmit Covered Defense Information (CDI) to obtain and maintain a Cybersecurity Maturity Model Certification (CMMC) at the level specified in the contract prior to contract award or at contract performance. The contractor must maintain the required CMMC level for the duration of the contract. Failure to maintain CMMC certification constitutes a material breach. The clause requires flow-down to subcontractors at any tier that will process, store, or transmit CDI. Contractors at CMMC Level 2 must undergo a third-party assessment every three years conducted by a CMMC Third-Party Assessor Organization (C3PAO) or submit an annual self-assessment if authorized. CMMC Level 3 requires government-led assessments."
+    },
+    {
+        "id": "DFARS 252.204-7008",
+        "title": "Compliance with Safeguarding Covered Defense Information Controls",
+        "vector": "CMMC, Cybersecurity, CUI, Covered Defense Information, NIST",
+        "clause_text": "This provision requires offerors to represent that they will implement NIST SP 800-171 security requirements prior to contract award if they do not already comply, and to provide a plan and estimated completion date. Offerors who cannot implement all NIST SP 800-171 requirements by the time of award must identify which requirements will not be implemented and provide a Plan of Action & Milestones (POA&M) outlining corrective actions. The Government may consider a contractor's security posture as part of the source selection decision. An offeror's failure to meet requirements or to provide an adequate POA&M may be grounds for excluding the offeror from competition."
+    },
+    {
+        "id": "DFARS 252.239-7018",
+        "title": "Supply Chain Risk",
+        "vector": "Supply Chain Risk, Cybersecurity, National Security, Information and Communication Technology",
+        "clause_text": "This clause authorizes the Government to exclude a contractor or subcontractor from award, or terminate a contract, if the Government determines that a supply chain risk exists in the acquisition of information and communication technology (ICT). The contractor must provide the Government with access to supply chain information upon request, including supplier identities, country of origin, and security practices. The contractor must notify the Contracting Officer of any change in its supply chain that could introduce supply chain risk. The contractor must also flow this requirement to subcontractors in solicitations and contracts for ICT used in support of mission-critical systems."
+    }
+]

@@ -1,0 +1,26 @@
+[
+    {
+        "id": "FAR 52.203-3",
+        "title": "Gratuities",
+        "vector": "Bribery, Kickbacks",
+        "clause_text": "The Government may terminate the contractor's right to proceed if the contractor, its agent, or representative offered or gave a gratuity to a Government official with the intent to obtain a contract or favorable treatment. If terminated, the Government is entitled to remedies for breach of contract and exemplary damages of 3 to 10 times the cost incurred by the Contractor in giving gratuities."
+    },
+    {
+        "id": "FAR 52.216-7",
+        "title": "Allowable Cost and Payment",
+        "vector": "Cost Mischarging, False Claims (related to improper invoicing)",
+        "clause_text": "This clause outlines the requirements for contractors to submit invoices for payment of allowable costs, including direct and indirect costs. It mandates the submission of adequate final indirect cost rate proposals and requires contractors to update billings to reflect settled rates. Failure to comply with these provisions, or the submission of unallowable costs, can lead to disallowance of costs, withholding of payments, and potential enforcement actions for mischarging or false claims."
+    },
+    {
+        "id": "FAR 52.203-14",
+        "title": "Display of Hotline Poster(s)",
+        "vector": "Indirect (Fraud Detection and Reporting)",
+        "clause_text": "This clause requires contractors to display agency fraud hotline posters in common work areas and on company websites to inform employees of their ability to report fraud, waste, and abuse. This promotes an environment where employees can safely report concerns, which is critical for early detection and prevention of procurement fraud."
+    },
+    {
+        "id": "FAR 52.246-2",
+        "title": "Inspection of Supplies-Fixed-Price",
+        "vector": "False Claims, Product Substitution, Cost Mischarging (if quality affects cost)",
+        "clause_text": "This clause grants the Government the right to inspect and test all supplies at all places and times, to ensure they conform to contract requirements. If supplies are not conforming, the Government may require replacement or correction, or accept them with an equitable price reduction. This helps prevent contractors from delivering non-conforming or substandard products while billing for compliant ones, which would constitute a false claim."
+    }
+]

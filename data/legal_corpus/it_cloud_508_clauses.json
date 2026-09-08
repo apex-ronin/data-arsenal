@@ -1,0 +1,14 @@
+[
+    {
+        "id": "Section 508 \u2014 29 U.S.C. \u00a7 794d",
+        "title": "Section 508 ICT Accessibility Requirements",
+        "vector": "Section 508, Accessibility, ICT, Disability, Assistive Technology, Web Standards",
+        "clause_text": "Section 508 of the Rehabilitation Act of 1973 requires Federal agencies to ensure that Information and Communications Technology (ICT) they develop, procure, maintain, or use is accessible to people with disabilities. Contractors providing ICT to Federal agencies must comply with the Access Board's ICT Accessibility Standards (36 C.F.R. Part 1194), which incorporate WCAG 2.0 Level AA guidelines for web content and equivalent functional performance criteria for hardware and software. The contractor must provide an Accessibility Conformance Report (ACR) based on the Voluntary Product Accessibility Template (VPAT) for all ICT deliverables. The contractor must remediate accessibility defects identified by the Government within specified timeframes and must ensure third-party components integrated into deliverables also meet Section 508 standards. Noncompliance may result in contract termination or mandatory corrective action plans."
+    },
+    {
+        "id": "FIPS 140-3",
+        "title": "FIPS 140-3 Cryptographic Module Requirements",
+        "vector": "Cryptography, FIPS, Encryption, Cybersecurity, Cryptographic Modules",
+        "clause_text": "Federal Information Processing Standard (FIPS) 140-3 specifies security requirements for cryptographic modules used to protect sensitive Federal information. Contractors providing systems or software that perform cryptographic operations to protect Federal information must use cryptographic modules that have been validated under the NIST Cryptographic Module Validation Program (CMVP) at FIPS 140-3 Security Level 1 or higher (higher levels for more sensitive data). Contractors may not use proprietary or unvalidated cryptographic algorithms for protecting Federal information. All encryption of data at rest and in transit must use FIPS-validated modules and approved algorithms (AES-256, SHA-256 or higher, RSA-2048 or higher, or ECDH/ECDSA with P-256 or higher). Contractors must document all cryptographic implementations and provide validation certificates to the Contracting Officer."
+    }
+]

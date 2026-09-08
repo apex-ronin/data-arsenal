@@ -1,19 +1,24 @@
 r"""
 Local FAISS index builder — sovereign retrieval layer (post-GCP-teardown).
 
-Replaces the deleted Vertex AI Vector Search stack. Embeds via LM Studio's
-OpenAI-compatible /v1/embeddings endpoint (nomic-embed-text-v1.5, 768 dims,
-local CPU — no network, no GCP creds).
+Embeds via Ollama's native /api/embed endpoint (nomic-embed-text, 768 dims,
+local CPU — no network beyond localhost, no GCP creds). Was LM Studio
+(localhost:1234, OpenAI-compat /v1/embeddings) until 2026-08-10, when it was
+removed from the stack; rewired here to match.
 
-Builds two indexes on G:\ (NOT OneDrive — OneDrive corrupted 2 git repos 2026-05-29):
-  G:\AI-Models\indexes\legal_corpus.faiss     + legal_corpus_meta.jsonl
-  G:\AI-Models\indexes\principalities.faiss   + principalities_meta.jsonl
+Builds two indexes under INDEX_DIR (repo-relative by default; override with
+RONIN_INDEX_DIR):
+  legal_corpus.faiss     + legal_corpus_meta.jsonl
+  principalities.faiss   + principalities_meta.jsonl
 Each with an index_manifest.json recording embedder name/version/dims —
 never mix embedders in one index.
 
-Sources:
-  legal corpus    — primordial-galaxy/data/legal_corpus/*.json (104 clauses, 8 files)
-  principalities  — data/processed/census/master_gov_units_2022.jsonl (78,291 records)
+Sources (this public repo ships small real token samples of both, kept in
+sync with the apex-ronin/legal-corpus and apex-ronin/principalities-index
+public repos — override either dir via env var to point at a full private
+checkout instead):
+  legal corpus    — data/legal_corpus/*.json (20 clauses, 8 files, sample)
+  principalities  — data/processed/census/master_gov_units_2022.jsonl (50 records, sample)
 
 Checkpointed: embeddings are written in .npy parts; rerun resumes from the
 last complete part. Safe to kill and restart.
@@ -40,39 +45,38 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger(__name__)
 
 # --- Embedder config (record in manifest; never mix embedders in one index) ---
-EMBED_URL = "http://localhost:1234/v1/embeddings"
-EMBED_MODEL = "text-embedding-nomic-embed-text-v1.5"
+EMBED_URL = "http://localhost:11434/api/embed"
+EMBED_MODEL = "nomic-embed-text"
 EMBED_DIMS = 768
 # nomic-embed v1.5 task prefixes — documents and queries MUST use these
 DOC_PREFIX = "search_document: "
 QUERY_PREFIX = "search_query: "
-BATCH_SIZE = 64          # strings per /v1/embeddings request
+BATCH_SIZE = 64          # strings per /api/embed request
 PART_SIZE = 1024         # records per checkpoint part (multiple of BATCH_SIZE)
 MAX_RETRIES = 5
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-# Canonical primordial-galaxy lives on G:\repos (the OneDrive copy is retired — do not use it).
-# Override with LEGAL_CORPUS_DIR env var if your checkout differs.
+# Ships a small real token sample at data/legal_corpus/ by default (see module
+# docstring). Point LEGAL_CORPUS_DIR at a full private legal-corpus checkout
+# to build the real 104-clause index instead.
 LEGAL_CORPUS_DIR = Path(
-    os.getenv("LEGAL_CORPUS_DIR", r"G:\repos\primordial-galaxy\data\legal_corpus")
+    os.getenv("LEGAL_CORPUS_DIR", str(REPO_ROOT / "data" / "legal_corpus"))
 )
 ENTITY_JSONL = REPO_ROOT / "data" / "processed" / "census" / "master_gov_units_2022.jsonl"
 
-INDEX_DIR = Path(r"G:\AI-Models\indexes")
+INDEX_DIR = Path(os.getenv("RONIN_INDEX_DIR", str(REPO_ROOT / "data" / "indexes")))
 CHECKPOINT_DIR = INDEX_DIR / ".checkpoints"
 
 
 def embed_batch(texts: list[str]) -> np.ndarray:
     """Embed one batch of already-prefixed strings; retries on transient failure."""
-    payload = {"model": EMBED_MODEL, "input": texts}
+    payload = {"model": EMBED_MODEL, "input": texts, "options": {"num_gpu": 0}}
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             resp = requests.post(EMBED_URL, json=payload, timeout=300)
             resp.raise_for_status()
-            data = resp.json()["data"]
-            # API preserves input order; verify by index field anyway
-            data.sort(key=lambda d: d["index"])
-            return np.array([d["embedding"] for d in data], dtype=np.float32)
+            # Ollama /api/embed preserves input order, one vector per input string.
+            return np.array(resp.json()["embeddings"], dtype=np.float32)
         except Exception as e:
             if attempt == MAX_RETRIES:
                 raise
@@ -176,7 +180,7 @@ def build_index(name: str, records: list[dict], vectors: np.ndarray,
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest[name] = {
         "embedder": EMBED_MODEL,
-        "embedder_serving": "LM Studio /v1/embeddings (localhost:1234)",
+        "embedder_serving": "Ollama /api/embed (localhost:11434)",
         "dimensions": EMBED_DIMS,
         "metric": "cosine (L2-normalized IndexFlatIP)",
         "doc_prefix": DOC_PREFIX,
